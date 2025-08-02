@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hüseyin Ayyıldız | İletişim</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      margin: 20px;
+      padding-bottom: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.8rem;
+      color: #007bff;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      padding: 0;
+      margin-bottom: 40px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #007bff;
+    }
+    section {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      line-height: 1.7;
+      font-size: 1.1rem;
+      color: #444;
+    }
+    section p {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    section a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    section a:hover {
+      text-decoration: underline;
+    }
+    form input[type="text"],
+    form input[type="email"],
+    form textarea {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    form button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    form button:hover {
+      background-color: #0056b3;
+    }
+    #gonderim-durumu {
+      margin-top: 10px;
+      font-weight: bold;
+      color: green;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>İletişim</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><a href="hakkimda.html">Hakkımda</a></li>
+      <li><a href="projelerim.html">Projelerim</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="dusuncelerim.html">Düşüncelerim</a></li>
+    </ul>
+  </nav>
+
+  <section>
+    <p><strong>Instagram:</strong> <a href="https://www.instagram.com/basarirotasi_official" target="_blank" rel="noopener noreferrer">@basarirotasi_official</a></p>
+    <p><strong>E-posta:</strong> <a href="mailto:ayyildizgrupofficial@gmail.com">ayyildizgrupofficial@gmail.com</a></p>
+
+    <h2>Yorum veya Mesaj Gönder</h2>
+    <form id="contact-form">
+      <input type="text" name="isim" placeholder="Adınız" required />
+      <input type="email" name="eposta" placeholder="E-posta" required />
+      <textarea name="mesaj" rows="5" placeholder="Mesajınız..." required></textarea>
+      <button type="submit">Gönder</button>
+      <p id="gonderim-durumu"></p>
+    </form>
+  </section>
+
+  <!-- EmailJS ve kendi script dosyan -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
