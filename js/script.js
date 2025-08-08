@@ -1,90 +1,83 @@
-<style>
-  /* Popup varsayılan gizli */
-  .popup {
-    display: none;
-    position: fixed;
-    z-index: 10000;
-    inset: 0;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-  /* Popup gösterildiğinde flex yap */
-  .popup.show {
-    display: flex;
-  }
-  .popup-content {
-    background-color: white;
-    border-radius: 15px;
-    padding: 30px 40px;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-  }
-  /* Diğer stiller aynı kalabilir */
-</style>
+// Smooth Scroll for nav links
+document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href');
+    const targetElem = document.querySelector(targetId);
+    if (targetElem) {
+      targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
 
-<div id="welcomePopup" class="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc">
-  <div class="popup-content">
-    <h2 id="popupTitle">Hoş Geldin!</h2>
-    <p id="popupDesc">Ben Hüseyin Ayyıldız. Bu benim kişisel sitem. Umarım hoşuna gider!</p>
-    <button id="closePopup" aria-label="Popup'ı kapat">Kapat</button>
-  </div>
-</div>
+// Popup management with localStorage
+document.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("welcomePopup");
+  const closeBtn = document.getElementById("closePopup");
 
-<script>
-  document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', function (e) {
-      const hedefID = this.getAttribute('href');
-      if (hedefID.startsWith('#')) {
-        e.preventDefault();
-        const hedefElement = document.querySelector(hedefID);
-        if (hedefElement) {
-          hedefElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
+  // Show popup only if not visited before
+  if (!localStorage.getItem("visited") && popup) {
+    popup.classList.add("show");
+    localStorage.setItem("visited", "true");
+  }
+
+  // Close popup on button click
+  if (closeBtn && popup) {
+    closeBtn.addEventListener("click", () => {
+      popup.classList.add("fadeOut");
+      setTimeout(() => {
+        popup.classList.remove("show", "fadeOut");
+      }, 300); // Fade out animation time
+    });
+  }
+
+  // Initialize EmailJS form submission
+  const form = document.getElementById("contact-form");
+  if (form) {
+    emailjs.init("ke5QPYfW3DP2i5J6N");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      emailjs.sendForm("service_fwkwa2t", "template_7nor3i8", form)
+        .then(() => {
+          const statusElem = document.getElementById("gonderim-durumu");
+          if (statusElem) {
+            statusElem.textContent = "Mesaj başarıyla gönderildi. Teşekkür ederiz!";
+            statusElem.classList.add("success");
+            setTimeout(() => {
+              statusElem.textContent = "";
+              statusElem.classList.remove("success");
+            }, 5000);
+          }
+          form.reset();
+        }, (error) => {
+          const statusElem = document.getElementById("gonderim-durumu");
+          if (statusElem) {
+            statusElem.textContent = "Bir hata oluştu. Lütfen tekrar deneyin.";
+            statusElem.classList.add("error");
+            setTimeout(() => {
+              statusElem.textContent = "";
+              statusElem.classList.remove("error");
+            }, 5000);
+          }
+          console.error("EmailJS Hatası:", error);
+        });
+    });
+  }
+
+  // Fade-in animasyonları sayfadaki tüm elementlere uygula
+  const fadeElements = document.querySelectorAll(".fade-in");
+  fadeElements.forEach(el => {
+    el.classList.add("visible");
+  });
+
+  // Buton hover animasyonu - ekstra görsel efekt
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach(btn => {
+    btn.addEventListener("mouseenter", () => {
+      btn.classList.add("btn-hover");
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.classList.remove("btn-hover");
     });
   });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const popup = document.getElementById("welcomePopup");
-    const closeBtn = document.getElementById("closePopup");
-
-    if (!localStorage.getItem("visited") && popup) {
-      popup.classList.add("show");
-      localStorage.setItem("visited", "true");
-    }
-
-    if (closeBtn && popup) {
-      closeBtn.addEventListener("click", function () {
-        popup.classList.remove("show");
-      });
-    }
-
-    const form = document.getElementById("contact-form");
-    if (form) {
-      emailjs.init("ke5QPYfW3DP2i5J6N");
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        emailjs
-          .sendForm("service_fwkwa2t", "template_7nor3i8", this)
-          .then(
-            function () {
-              document.getElementById("gonderim-durumu").textContent =
-                "Mesaj başarıyla gönderildi. Teşekkür ederiz!";
-              form.reset();
-            },
-            function (error) {
-              document.getElementById("gonderim-durumu").textContent =
-                "Bir hata oluştu. Lütfen tekrar deneyin.";
-              console.error("FAILED...", error);
-            }
-          );
-      });
-    }
-  });
-</script>
+});

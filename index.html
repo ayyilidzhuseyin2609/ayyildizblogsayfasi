@@ -7,7 +7,242 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Temel Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f9faff;
+      color: #222;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      text-align: center;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Başlık */
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      letter-spacing: 1.2px;
+      word-wrap: break-word;
+    }
+
+    /* Profil Fotoğrafı */
+    img[src^="assets/"] {
+      display: block;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.7);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Menü */
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin-bottom: 40px;
+      padding: 0 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222;
+      background-color: #e1e7f2;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    nav ul li a:hover,
+    nav ul li a:focus {
+      background-color: #007bff;
+      color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+    }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      inset: 0;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .popup.show {
+      display: flex;
+    }
+    .popup-content {
+      background-color: white;
+      border-radius: 15px;
+      padding: 30px 40px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .popup-content h2 {
+      color: #007bff;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .popup-content p {
+      color: #333;
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      line-height: 1.4;
+    }
+    #closePopup {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #closePopup:hover {
+      background-color: #0056b3;
+    }
+
+    /* Proje Tanıtım Bölümü */
+    .proje-section {
+      background: #fff;
+      max-width: 900px;
+      margin: 80px auto 60px;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+      text-align: left;
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .proje-section h2 {
+      font-size: 2.6rem;
+      color: #007bff;
+      margin-bottom: 20px;
+      font-weight: 700;
+      border-bottom: 4px solid #007bff;
+      padding-bottom: 8px;
+    }
+
+    .proje-section p {
+      font-size: 1.18rem;
+      line-height: 1.7;
+      margin-bottom: 25px;
+      color: #444;
+    }
+
+    .proje-section h3 {
+      font-size: 1.7rem;
+      color: #0056b3;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .proje-section ol {
+      margin-left: 25px;
+      margin-bottom: 30px;
+      color: #555;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .proje-section ol li {
+      margin-bottom: 12px;
+    }
+
+    .proje-section .call-to-action {
+      font-weight: 700;
+      color: #222;
+      font-size: 1.25rem;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      nav ul {
+        gap: 15px;
+        padding: 0 5px;
+      }
+
+      nav ul li a {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+      }
+
+      .proje-section {
+        padding: 30px 20px;
+        margin: 50px 10px 40px;
+      }
+
+      .proje-section h2 {
+        font-size: 2rem;
+      }
+
+      .proje-section p,
+      .proje-section ol {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -40,3 +275,70 @@
     </ul>
   </nav>
 
+  <!-- Buraya kendi orijinal içeriğin varsa devam edebilir -->
+
+  <!-- Proje Tanıtımı ve Destek Bölümü -->
+  <section id="proje-destek" class="proje-section" tabindex="-1">
+    <h2>Görme Engelliler İçin Hayat Kolaylaştıran Mobil Uygulama</h2>
+
+    <p>
+      Merhaba, ben Hüseyin Ayyıldız. Görme engelli bireylerin bağımsızlıklarını ve yaşam kalitelerini artırmak için geliştirdiğim bu özel mobil uygulama, teknolojiyi insanlık yararına kullanmayı hedefliyor.
+    </p>
+
+    <p>
+      Uygulamamız, telefon kamerası ile çevredeki engelleri algılayıp kullanıcısına titreşimli uyarılar göndererek güvenli yürüyüş imkânı sağlar. Başlangıç aşamasında basit bir titreşim sistemi ile yola çıkacak, ilerleyen versiyonlarda yapay zeka ile mesafe ve engel türü tanımlaması yapılacaktır.
+    </p>
+
+    <h3>Proje Aşamaları</h3>
+    <ol>
+      <li><strong>Başlangıç Modeli:</strong> Kamera ve titreşim uyarılarının temel çalışması sağlanacak, düşük performanslı telefonlarda sorunsuz çalışacak şekilde optimize edilecek.</li>
+      <li><strong>Gelişmiş Model:</strong> Yapay zeka destekli engel analizi, sesli uyarılar ve mesafe ölçümü entegre edilecek.</li>
+      <li><strong>Donanım Destekleri:</strong> Telefon tutucu ve gözlük gibi fiziksel aksesuarlar geliştirilecek.</li>
+      <li><strong>Yaygınlaştırma ve Destek:</strong> Devlet kurumları, yatırımcılar ve sosyal platformlarla iş birliği sağlanarak daha geniş kitlelere ulaşılacak.</li>
+    </ol>
+
+    <p>
+      Bu proje sadece bir teknoloji girişimi değil, toplumsal fayda amaçlı büyük bir misyon. Sizlerin destekleriyle engelleri aşacak, hayatları kolaylaştıracağız. Yatırımcılar, gönüllüler ve kurumlarla beraber büyümek için desteğinizi bekliyoruz.
+    </p>
+
+    <p class="call-to-action">
+      <strong>Birlikte daha güzel yarınlara!</strong> Destekleriniz için teşekkür ederim.
+    </p>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Popup işlemleri
+      const popup = document.getElementById("welcomePopup");
+      const closeBtn = document.getElementById("closePopup");
+
+      if (!localStorage.getItem("visited") && popup) {
+        popup.classList.add("show");
+        localStorage.setItem("visited", "true");
+      }
+
+      if (closeBtn && popup) {
+        closeBtn.addEventListener("click", function () {
+          popup.classList.remove("show");
+        });
+      }
+
+      // Scroll ile proje tanıtım bölümüne animasyon
+      const projeSection = document.getElementById("proje-destek");
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            projeSection.style.opacity = 1;
+            projeSection.style.transform = "translateY(0)";
+          }
+        });
+      }, { threshold: 0.3 });
+
+      if (projeSection) {
+        observer.observe(projeSection);
+      }
+    });
+  </script>
+
+</body>
+</html>
