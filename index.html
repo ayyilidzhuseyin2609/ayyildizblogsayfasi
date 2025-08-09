@@ -63,6 +63,7 @@
       gap: 25px;
       margin-bottom: 40px;
       padding: 0 10px;
+      align-items: center; /* eklendi */
     }
 
     nav ul li a {
@@ -85,6 +86,24 @@
       color: #fff;
       transform: scale(1.05);
       box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+    }
+
+    /* Dil Butonları için ek stil */
+    .lang-btn {
+      margin-left: 10px;
+      padding: 6px 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .lang-btn:hover {
+      background-color: #0056b3;
     }
 
     /* Popup */
@@ -257,9 +276,9 @@
 
   <!-- Header -->
   <header>
-    <h1>Benim Adım HÜSEYİN AYYILDIZ</h1>
+    <h1 id="header-title">Benim Adım HÜSEYİN AYYILDIZ</h1>
     <img src="assets/unnamed.png" alt="Hüseyin Ayyıldız'ın fotoğrafı" class="profile-photo" />
-    <p>Motivasyon başlatır, disiplin bitirir.</p>
+    <p id="motto">Motivasyon başlatır, disiplin bitirir.</p>
   </header>
 
   <!-- Navigation -->
@@ -273,40 +292,44 @@
       <li><a href="hedeflerim.html">Hedeflerim</a></li>
       <li><a href="yapayzeka.html">Yapay Zekâ</a></li>
     </ul>
+    <!-- Dil butonları buraya eklendi -->
+    <button id="btn-tr" class="lang-btn" aria-label="Türkçe">TR</button>
+    <button id="btn-en" class="lang-btn" aria-label="İngilizce">EN</button>
   </nav>
 
   <!-- Buraya kendi orijinal içeriğin varsa devam edebilir -->
 
   <!-- Proje Tanıtımı ve Destek Bölümü -->
   <section id="proje-destek" class="proje-section" tabindex="-1">
-    <h2>Görme Engelliler İçin Hayat Kolaylaştıran Mobil Uygulama</h2>
+    <h2 id="project-title">Görme Engelliler İçin Hayat Kolaylaştıran Mobil Uygulama</h2>
 
-    <p>
+    <p id="project-intro-1">
       Merhaba, ben Hüseyin Ayyıldız. Görme engelli bireylerin bağımsızlıklarını ve yaşam kalitelerini artırmak için geliştirdiğim bu özel mobil uygulama, teknolojiyi insanlık yararına kullanmayı hedefliyor.
     </p>
 
-    <p>
+    <p id="project-intro-2">
       Uygulamamız, telefon kamerası ile çevredeki engelleri algılayıp kullanıcısına titreşimli uyarılar göndererek güvenli yürüyüş imkânı sağlar. Başlangıç aşamasında basit bir titreşim sistemi ile yola çıkacak, ilerleyen versiyonlarda yapay zeka ile mesafe ve engel türü tanımlaması yapılacaktır.
     </p>
 
-    <h3>Proje Aşamaları</h3>
+    <h3 id="project-stages-title">Proje Aşamaları</h3>
     <ol>
-      <li><strong>Başlangıç Modeli:</strong> Kamera ve titreşim uyarılarının temel çalışması sağlanacak, düşük performanslı telefonlarda sorunsuz çalışacak şekilde optimize edilecek.</li>
-      <li><strong>Gelişmiş Model:</strong> Yapay zeka destekli engel analizi, sesli uyarılar ve mesafe ölçümü entegre edilecek.</li>
-      <li><strong>Donanım Destekleri:</strong> Telefon tutucu ve gözlük gibi fiziksel aksesuarlar geliştirilecek.</li>
-      <li><strong>Yaygınlaştırma ve Destek:</strong> Devlet kurumları, yatırımcılar ve sosyal platformlarla iş birliği sağlanarak daha geniş kitlelere ulaşılacak.</li>
+      <li id="stage-1"><strong>Başlangıç Modeli:</strong> Kamera ve titreşim uyarılarının temel çalışması sağlanacak, düşük performanslı telefonlarda sorunsuz çalışacak şekilde optimize edilecek.</li>
+      <li id="stage-2"><strong>Gelişmiş Model:</strong> Yapay zeka destekli engel analizi, sesli uyarılar ve mesafe ölçümü entegre edilecek.</li>
+      <li id="stage-3"><strong>Donanım Destekleri:</strong> Telefon tutucu ve gözlük gibi fiziksel aksesuarlar geliştirilecek.</li>
+      <li id="stage-4"><strong>Yaygınlaştırma ve Destek:</strong> Devlet kurumları, yatırımcılar ve sosyal platformlarla iş birliği sağlanarak daha geniş kitlelere ulaşılacak.</li>
     </ol>
 
-    <p>
+    <p id="project-mission">
       Bu proje sadece bir teknoloji girişimi değil, toplumsal fayda amaçlı büyük bir misyon. Sizlerin destekleriyle engelleri aşacak, hayatları kolaylaştıracağız. Yatırımcılar, gönüllüler ve kurumlarla beraber büyümek için desteğinizi bekliyoruz.
     </p>
 
-    <p class="call-to-action">
+    <p class="call-to-action" id="call-to-action">
       <strong>Birlikte daha güzel yarınlara!</strong> Destekleriniz için teşekkür ederim.
     </p>
   </section>
 
   <script>
+    // Sayfa hazır olunca popup ve animasyon işleri
     document.addEventListener("DOMContentLoaded", function () {
       // Popup işlemleri
       const popup = document.getElementById("welcomePopup");
@@ -337,6 +360,65 @@
       if (projeSection) {
         observer.observe(projeSection);
       }
+    });
+
+    // Dil metinleri objesi
+    const texts = {
+      tr: {
+        "header-title": "Benim Adım HÜSEYİN AYYILDIZ",
+        "popupTitle": "Hoş Geldin!",
+        "popupDesc": "Ben Hüseyin Ayyıldız. Bu benim kişisel sitem. Umarım hoşuna gider!",
+        "motto": "Motivasyon başlatır, disiplin bitirir.",
+        "project-title": "Görme Engelliler İçin Hayat Kolaylaştıran Mobil Uygulama",
+        "project-intro-1": "Merhaba, ben Hüseyin Ayyıldız. Görme engelli bireylerin bağımsızlıklarını ve yaşam kalitelerini artırmak için geliştirdiğim bu özel mobil uygulama, teknolojiyi insanlık yararına kullanmayı hedefliyor.",
+        "project-intro-2": "Uygulamamız, telefon kamerası ile çevredeki engelleri algılayıp kullanıcısına titreşimli uyarılar göndererek güvenli yürüyüş imkânı sağlar. Başlangıç aşamasında basit bir titreşim sistemi ile yola çıkacak, ilerleyen versiyonlarda yapay zeka ile mesafe ve engel türü tanımlaması yapılacaktır.",
+        "project-stages-title": "Proje Aşamaları",
+        "stage-1": "Başlangıç Modeli: Kamera ve titreşim uyarılarının temel çalışması sağlanacak, düşük performanslı telefonlarda sorunsuz çalışacak şekilde optimize edilecek.",
+        "stage-2": "Gelişmiş Model: Yapay zeka destekli engel analizi, sesli uyarılar ve mesafe ölçümü entegre edilecek.",
+        "stage-3": "Donanım Destekleri: Telefon tutucu ve gözlük gibi fiziksel aksesuarlar geliştirilecek.",
+        "stage-4": "Yaygınlaştırma ve Destek: Devlet kurumları, yatırımcılar ve sosyal platformlarla iş birliği sağlanarak daha geniş kitlelere ulaşılacak.",
+        "project-mission": "Bu proje sadece bir teknoloji girişimi değil, toplumsal fayda amaçlı büyük bir misyon. Sizlerin destekleriyle engelleri aşacak, hayatları kolaylaştıracağız. Yatırımcılar, gönüllüler ve kurumlarla beraber büyümek için desteğinizi bekliyoruz.",
+        "call-to-action": "Birlikte daha güzel yarınlara! Destekleriniz için teşekkür ederim."
+      },
+      en: {
+        "header-title": "My Name is HÜSEYİN AYYILDIZ",
+        "popupTitle": "Welcome!",
+        "popupDesc": "I am Hüseyin Ayyıldız. This is my personal website. Hope you like it!",
+        "motto": "Motivation starts, discipline finishes.",
+        "project-title": "A Mobile App That Makes Life Easier for the Visually Impaired",
+        "project-intro-1": "Hello, I am Hüseyin Ayyıldız. This special mobile app I developed aims to increase the independence and quality of life of visually impaired individuals by using technology for the benefit of humanity.",
+        "project-intro-2": "Our app detects obstacles around using the phone camera and sends vibration alerts to the user for safe walking. It will start with a simple vibration system in the initial phase and will include AI-based distance and obstacle recognition in later versions.",
+        "project-stages-title": "Project Stages",
+        "stage-1": "Initial Model: The basic operation of camera and vibration alerts will be ensured and optimized to work smoothly on low-performance phones.",
+        "stage-2": "Advanced Model: AI-supported obstacle analysis, voice alerts, and distance measurement will be integrated.",
+        "stage-3": "Hardware Supports: Physical accessories such as phone holders and glasses will be developed.",
+        "stage-4": "Promotion and Support: Collaboration with government institutions, investors, and social platforms to reach wider audiences.",
+        "project-mission": "This project is not just a technology initiative but a great mission for social benefit. With your support, we will overcome obstacles and ease lives. We are waiting for your support to grow together with investors, volunteers, and institutions.",
+        "call-to-action": "Together for a better tomorrow! Thank you for your support."
+      }
+    };
+
+    // Dil değiştirme fonksiyonu
+    function changeLanguage(lang) {
+      for (const key in texts[lang]) {
+        const elem = document.getElementById(key);
+        if (elem) {
+          elem.textContent = texts[lang][key];
+        }
+      }
+      localStorage.setItem("language", lang);
+    }
+
+    // Sayfa yüklendiğinde önceki dil seçimi uygulanır
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedLang = localStorage.getItem("language") || "tr";
+      changeLanguage(savedLang);
+    });
+
+    // Butonlara tıklanınca dil değiştirme
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("btn-tr").addEventListener("click", () => changeLanguage("tr"));
+      document.getElementById("btn-en").addEventListener("click", () => changeLanguage("en"));
     });
   </script>
 

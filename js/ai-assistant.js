@@ -1,65 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatLog = document.getElementById('chatLog');
-    const userInput = document.getElementById('userInput');
-    const chatForm = document.getElementById('chatForm');
-  
-    const responses = {
-      'merhaba': 'Merhaba! Ben Hüseyin Ayyıldız’ın yapay asistanıyım. Size nasıl yardımcı olabilirim?',
-      'nasılsın': 'İyiyim, teşekkür ederim! Sen nasılsın?',
-      'kimsin': 'Ben Hüseyin Ayyıldız’ın kişisel web sitesi için tasarlanmış yapay asistanım.',
-      'ne iş yapıyorsun': 'Yazılım geliştiriciyim ve öğrenciyim. Sitenin dijital evinde sana yardımcı olmak için buradayım.',
-      'motivasyon verir misin': 'Elbette! “Motivasyon başlatır, disiplin bitirir.” Unutma, her gün küçük bir adım büyük değişimdir!',
-      'projelerin neler': 'Şu anda iki önemli projem var: "Eğitim Sahası" uygulaması, lise öğrencilerine yönelik sınava hazırlık notları ve testleri içeriyor. ÖSYM\'nin sınav sorularını da ekleyerek, puanlama sistemiyle öğrencilere motivasyon sağlıyor. İkinci projem ise kişisel asistan; şu anda planlama aşamasında.',
-      'vatan sevgisi nedir': 'Vatan sevgisi, insanın doğduğu topraklara ve milletine olan derin bağlılığıdır. Bu benim için çok önemli.',
-      'yardım eder misin': 'Tabii ki! Herhangi bir sorunuz varsa, elimden geldiğince yardımcı olmaya hazırım.',
-      'teşekkür ederim': 'Rica ederim! Her zaman buradayım, çekinmeden sorabilirsin.'
-    };
-  
-    function createMessage(text, sender) {
-      const message = document.createElement('div');
-      message.textContent = text;
-      message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-      return message;
-    }
-  
-    function processInput(input) {
-      const text = input.trim().toLowerCase();
-  
-      let reply = 'Üzgünüm, bunu anlayamadım. Başka bir şey sorabilir misin?';
-  
-      for (const key in responses) {
-        if (text.includes(key)) {
-          reply = responses[key];
-          break;
-        }
+  const chatLog = document.getElementById('chatLog');
+  const userInput = document.getElementById('userInput');
+  const chatForm = document.getElementById('chatForm');
+
+  // Buraya kendi OpenAI API anahtarını koy
+  const API_KEY = "YOUR_Osk-proj-bdQEJgt9ykdUumDLQ9N5Q5_7Cxa0kdSjVckWORTPVDz4DXL5uHdn6uOM2CXwlIStLQxikR9rE4T3BlbkFJuEilpu-vk5moLl-PZI8UnEL7Fa8H9Gp-ff-895Gz9pHvkoUjBrkgV0fb-y7NwhQKtYdCMa0rcA";
+  const API_URL = "https://api.openai.com/v1/chat/completions";
+
+  // Mesaj oluşturma fonksiyonu
+  function createMessage(text, sender) {
+    const message = document.createElement('div');
+    message.textContent = text;
+    message.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+    return message;
+  }
+
+  // OpenAI API çağrısı yapan async fonksiyon
+  async function getAIResponse(userText) {
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "Sen Hüseyin Ayyıldız’ın web sitesinde çalışan yardımcı bir asistansın." },
+            { role: "user", content: userText }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API hatası: ${response.status}`);
       }
-  
-      return reply;
+
+      const data = await response.json();
+      return data.choices[0].message.content.trim();
+    } catch (error) {
+      console.error("OpenAI API Hatası:", error);
+      return "Üzgünüm, bir hata oluştu. Daha sonra tekrar deneyin.";
     }
-  
-    function sendMessage(text) {
-      if (!text.trim()) return;
-  
-      // Kullanıcı mesajı ekle
-      chatLog.appendChild(createMessage(text, 'user'));
-  
-      // Scroll en sona
-      chatLog.scrollTop = chatLog.scrollHeight;
-  
-      // Bot cevap yazıyor efekti için küçük gecikme
-      setTimeout(() => {
-        const botReply = processInput(text);
-        chatLog.appendChild(createMessage(botReply, 'bot'));
-        chatLog.scrollTop = chatLog.scrollHeight;
-      }, 800);
-    }
-  
-    chatForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const input = userInput.value;
-      if (!input.trim()) return;
-      sendMessage(input);
-      userInput.value = '';
-    });
+  }
+
+  // Mesaj gönderme fonksiyonu
+  async function sendMessage(text) {
+    if (!text.trim()) return;
+
+    // Kullanıcı mesajını göster
+    chatLog.appendChild(createMessage(text, 'user'));
+    chatLog.scrollTop = chatLog.scrollHeight;
+
+    // Bot "yazıyor..." efekti göster
+    const typingMessage = createMessage("Yazıyor...", 'bot');
+    chatLog.appendChild(typingMessage);
+    chatLog.scrollTop = chatLog.scrollHeight;
+
+    // API'den yanıt al
+    const botReply = await getAIResponse(text);
+
+    // Yazıyor mesajını kaldır ve gerçek cevabı ekle
+    chatLog.removeChild(typingMessage);
+    chatLog.appendChild(createMessage(botReply, 'bot'));
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  // Form gönderme olayını dinle
+  chatForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const input = userInput.value;
+    if (!input.trim()) return;
+    sendMessage(input);
+    userInput.value = '';
   });
-  
+});
